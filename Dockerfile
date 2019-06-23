@@ -23,4 +23,4 @@ EXPOSE 9292
 # Default rackup does not allow public connections
 ## ENTRYPOINT ["bundle","exec","rackup"]
 # use directly puma command (cf https://github.com/puma/puma)
-ENTRYPOINT bundle exec puma -t 5:5 -p 9292 -e development
+ENTRYPOINT bundle exec puma -t 1:2 -p 9292 -e development
