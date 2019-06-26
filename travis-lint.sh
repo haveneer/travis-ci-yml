@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euEo pipefail
+# set -x # debug mode
 
 # ${X-} returns empty not "unbound variable" due to `set -u`
 FILE=${1-}
@@ -21,6 +22,6 @@ while ! curl -s "http://localhost:9292/v1" -o /dev/null ; do
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
-curl -sS -X POST --data-binary @${FILE} "http://localhost:9292/v1/parse" | jq --raw-output '.full_messages[]'
+curl -sS -X POST --data-binary "@${FILE}" "http://localhost:9292/v1/parse" | jq --raw-output 'if .error_message then "[\(.error_type)] : \(.error_message)" else .full_messages[] end'
 
 docker stop travis-lint > /dev/null
